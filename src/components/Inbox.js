@@ -98,13 +98,6 @@ export default class Inbox extends React.Component{
             if (a<b) return -1*this.state.sortByDateMultiplier;
             return 0;
         });
-        searchResults.sort((a,b)=>{
-            a=new Date(a.date);
-            b=new Date(b.date);
-            if (a>b) return this.state.sortByDateMultiplier;
-            if (a<b) return -1*this.state.sortByDateMultiplier;
-            return 0;
-        });
         this.setState({searchEmails: searchResults});
     }
 
