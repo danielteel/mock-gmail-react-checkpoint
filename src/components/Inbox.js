@@ -40,10 +40,14 @@ export default class Inbox extends React.Component{
         }
     }
 
-    componentDidMount = async () => {
+    getEmailsFromServer = async () => {
         const response = await fetch("http://localhost:3001/emails");
         let emails = await response.json();
         this.setState({emails: emails});
+    }
+
+    componentDidMount = () => {
+        this.getEmailsFromServer();
     }
 
     newUniqueID(){
@@ -75,7 +79,7 @@ export default class Inbox extends React.Component{
                                     )
         const didSend=await response.json();
         if (didSend.status==="success"){
-            this.componentDidMount();
+            this.getEmailsFromServer();
             return true;
         }else{
             return false;
