@@ -95,13 +95,13 @@ export default class Inbox extends React.Component{
         this.setState({searchText: this.state.filter});
         const response = await fetch("http://localhost:3001/search?query="+decodeURIComponent(this.state.filter));
         let searchResults = await response.json();
-        searchResults.sort((a,b)=>{
-            a=new Date(a.date);
-            b=new Date(b.date);
-            if (a>b) return this.state.sortByDateMultiplier;
-            if (a<b) return -1*this.state.sortByDateMultiplier;
-            return 0;
-        });
+        searchResults.sort( (a,b)   =>  {
+                                            a=new Date(a.date);
+                                            b=new Date(b.date);
+                                            if (a>b) return this.state.sortByDateMultiplier;
+                                            if (a<b) return -1*this.state.sortByDateMultiplier;
+                                            return 0;
+                                        });
         this.setState({searchEmails: searchResults});
     }
 
@@ -111,11 +111,12 @@ export default class Inbox extends React.Component{
 
     render(){
         let searchedEmails=this.state.searchEmails;
-
+        let filter=this.state.filter.toLowerCase().trim();
+        
         let filteredEmails = this.state.emails;
-        if (this.state.filter.length>0){
-            filteredEmails = filteredEmails.filter( (email) => email.subject.toLowerCase().includes(this.state.filter.toLowerCase()));
-            searchedEmails = searchedEmails.filter( (email) => email.subject.toLowerCase().includes(this.state.filter.toLowerCase()));
+        if (filter.length>0){
+            filteredEmails = filteredEmails.filter( (email) => email.subject.toLowerCase().includes(filter));
+            searchedEmails = searchedEmails.filter( (email) => email.subject.toLowerCase().includes(filter));
         }
 
         filteredEmails.sort((a,b)=>{
@@ -138,12 +139,12 @@ export default class Inbox extends React.Component{
                     <Switch>
                         <Route exact path='/'>
                             <TopBar searchOnClick={this.doSearch} filterOnChange={this.filterChanged} filterValue={this.state.filter}/>
-                            <Header>Inbox</Header>
+                            <Header>Inbox ({this.props.ownEmailAddress})</Header>
                             {
-                                this.state.filter.length>0?<h2>Filtering results to: {this.state.filter}</h2>:""
+                                filter.length>0?<h2>Filtering results to: {filter}</h2>:""
                             }
                             {
-                                inbox.map((email) => <EmailListItem email={email} filter={this.state.filter}/>)  
+                                inbox.map((email) => <EmailListItem email={email} filter={filter} ourEmailAddress={this.props.ownEmailAddress}/>)  
                             }
                         </Route>
 
@@ -151,15 +152,15 @@ export default class Inbox extends React.Component{
                             <TopBar searchOnClick={this.doSearch} filterOnChange={this.filterChanged} filterValue={this.state.filter}/>
                             <Header>Sent Items</Header>
                             {
-                                this.state.filter.length>0?<h2>Filtering results to: {this.state.filter}</h2>:""
+                                filter.length>0?<h2>Filtering results to: {filter}</h2>:""
                             }
                             {
-                                sentbox.map((email) => <EmailListItem email={email} filter={this.state.filter}/>)  
+                                sentbox.map((email) => <EmailListItem email={email} filter={filter} ourEmailAddress={this.props.ownEmailAddress}/>)  
                             }
                         </Route>
 
                         <Route path='/email/:id'>
-                            <Email emails={this.state.emails}/>
+                            <Email emails={this.state.emails} ourEmailAddress={this.props.ownEmailAddress}/>
                         </Route>
 
                         <Route path='/compose/'>
@@ -170,7 +171,7 @@ export default class Inbox extends React.Component{
                             <h2>Search results of: {this.state.searchText}</h2>
                             {
                                 //Implemented this to make use of the api, but I like my filter thing I did up above.
-                                searchedEmails.map((email) => <EmailListItem email={email} filter={this.state.filter}/>)  
+                                searchedEmails.map((email) => <EmailListItem email={email} filter={filter} ourEmailAddress={this.props.ownEmailAddress}/>)  
                             }
                         </Route>
                     </Switch>

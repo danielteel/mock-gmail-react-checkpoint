@@ -8,16 +8,23 @@ import  {
 const StyledLink = styled(Link)`
     display: flex;
     flex-direction: row;
-    border-width:1;
+    border-width:1px;
     border-style:solid;
     border-color: gray;
-    margin: 5px;
+    margin: 3px;
     text-decoration: none;
     background-color: #FFFFFF;
     color: black;
     justify-content: center;
     align-items:center;
     border-radius:8px;
+
+    &:hover {
+        background-color: #EEEEEE;
+    }
+    &:active {
+        background-color: #CCCCEE;
+    }
 `;
 
 const LeftSide = styled.div`
@@ -33,11 +40,13 @@ const LeftSideFrom = styled.div`
 `;
 const LeftSideSubject = styled.div`
     align-self: flex-start;
-    font-size: 1.5em;
+    font-size: 1.25em;
+    font-weight: 500;
     margin-left: 10px;
     padding: 2px;
 `;
 const RightSide = styled.div`
+    margin: 10px;
 `;
 
 const FilterSpan = styled.span`color:red;`;
@@ -64,11 +73,13 @@ function applyFilterToText(text, filter){
     return returnVal;
 }
 
-export default function EmailListItem({email, filter}){;
+export default function EmailListItem({email, filter, ourEmailAddress}){
+    let sender = (ourEmailAddress.toLowerCase().trim() === email.sender.toLowerCase().trim()) ? "me": email.sender;
+    let reciever = (ourEmailAddress.toLowerCase().trim() === email.recipient.toLowerCase().trim()) ? "me": email.recipient;
     return  <StyledLink to={'/email/'+email.id}>
                 <LeftSide>
                     <LeftSideSubject>{applyFilterToText(email.subject, filter)}</LeftSideSubject>
-                    <LeftSideFrom>{email.sender} → {email.recipient}</LeftSideFrom>
+                    <LeftSideFrom>{sender} → {reciever}</LeftSideFrom>
                 </LeftSide>
                 <RightSide>
                     {new Date(email.date).toDateString()}

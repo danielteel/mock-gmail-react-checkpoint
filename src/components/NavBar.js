@@ -4,31 +4,61 @@ import  {
     Link,
   } from 'react-router-dom';
 
-const FlexBoxRow = styled.div`
+const FlexyBox = styled.div`
     display:flex; 
     flex-direction:column;
-    background-color: #DDDDDD;
+    background-color: #EEEEEE;
+    border-right-style: dashed;
+    border-width: 1px;
+    border-color: #999999;
+`;
+
+const ComposeLink = styled(Link)`
+    background-color: #CCCCCC;
+    text-decoration: none;
+    color: black;
+    padding: 10px;
+    margin: 5px;
+    margin-bottom:20px;
+    border-color: black;
+    border-width: 1px;
+    border-radius: 3px;
+    border-style: solid;
+
+    &:hover{
+        background-color: #DDDDDD;
+    }
+    &:active{
+        background-color: #EEEEEE;
+    }
 `;
 
 const StyledLink = styled(Link)`
     background-color: #CCCCCC;
     text-decoration: none;
-    color: darkblue;
-    padding: 10px;
+    color: black;
+    padding: 5px;
     margin: 5px;
-    border-color: #0000BB;
+    border-color: black;
     border-width: 1px;
     border-radius: 3px;
     border-style: solid;
+
+    &:hover{
+        background-color: #DDDDDD;
+    }
+    &:active{
+        background-color: #EEEEEE;
+    }
 `;
 
 
 export default function NavBar({resetFilter}){
     return  (   
-                <FlexBoxRow>
-                    <StyledLink to='/compose' onClick={()=>{resetFilter()}}>Compose</StyledLink>
+                <FlexyBox>
+                    <ComposeLink to='/compose' onClick={()=>{resetFilter()}}>Compose</ComposeLink>
                     <StyledLink to='/' onClick={()=>{resetFilter()}}>Inbox</StyledLink>
                     <StyledLink to='/sent' onClick={()=>{resetFilter()}}>Sent</StyledLink>
-                </FlexBoxRow>
+                </FlexyBox>
             );
 }

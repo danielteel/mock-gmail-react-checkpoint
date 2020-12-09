@@ -2,7 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import  {
     Link,
+    useHistory
   } from 'react-router-dom';
+
 
 const TopBarContainer = styled.div`
     background-color: #cccccc;
@@ -45,10 +47,12 @@ const PlaceHolder = styled.div`flex-grow: 2;`;
 
 
 export default function TopBar({searchOnClick, filterOnChange, filterValue}){
+    const history = useHistory();
+    const searchIt = (e) => { if (e.code==="Enter") {searchOnClick(); history.push("search");}}
     return  (   
                 <TopBarContainer>
                     <PlaceHolder/>
-                    <InputStyled id="filter" type="text" onChange={(e)=>filterOnChange(e.target.value)} value={filterValue}/>
+                    <InputStyled id="filter" type="text" onChange={(e)=>filterOnChange(e.target.value)} onKeyPress={(e)=>{searchIt(e)}} value={filterValue}/>
                     <SearchLink onClick={()=>searchOnClick()} to={'search'}>Search</SearchLink>
                     <PlaceHolder/>
                 </TopBarContainer>

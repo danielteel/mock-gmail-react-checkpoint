@@ -64,7 +64,7 @@ const EmailContainer = styled.div`
   background-color: #FaFaFa;
   padding: 5px;
 `;
-export default function Email({emails}){
+export default function Email({emails, ourEmailAddress}){
     const history=useHistory();
 
     let {id} = useParams();
@@ -73,13 +73,15 @@ export default function Email({emails}){
         return <Header>Email doesnt exist!</Header>
     }
 
+    let sender = (ourEmailAddress.toLowerCase().trim() === thisEmail.sender.toLowerCase().trim()) ? "me": thisEmail.sender;
+    let reciever = (ourEmailAddress.toLowerCase().trim() === thisEmail.recipient.toLowerCase().trim()) ? "me": thisEmail.recipient;
 
     return  <EmailContainer>
                 <Header>Message Details</Header>
                 <DetailsContainer>
                     <FromAndSubject>
-                        <From><b>From:</b> {thisEmail.sender}</From>
-                        <From><b>To:</b> {thisEmail.recipient}</From>
+                        <From><b>From:</b> {sender}</From>
+                        <From><b>To:</b> {reciever}</From>
                         <Subject><b>Subject:</b> {thisEmail.subject}</Subject>
                     </FromAndSubject>
                     <DateDisplay>
